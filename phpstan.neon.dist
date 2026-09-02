@@ -1,0 +1,17 @@
+parameters:
+    phpVersion: 80200
+    treatPhpDocTypesAsCertain: false
+    tipsOfTheDay: false
+    level: max
+    resultCachePath: var/cache/phpstan-result.cache
+    paths:
+        - src
+        - config
+        - migrations
+        - tests
+        - scripts
+    ignoreErrors:
+        - '=Property [^ ]+Controller::\$[^ ]+ is never written, only read='
+        - '#^Property [\w\\]+::\$\w+ is never written, only read#'
+includes:
+    - tests/phpstan-find-architecture-tests.php

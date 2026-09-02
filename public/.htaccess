@@ -1,0 +1,52 @@
+# enable apache rewrite module
+RewriteEngine On
+
+# pass environment variables from Apache to PHP
+RewriteCond %{ENV:APPLICATION_TRUST_PROXY_HEADERS} (.+)
+RewriteRule .* - [E=APPLICATION_TRUST_PROXY_HEADERS:%1]
+RewriteCond %{ENV:APPLICATION_LOG_LEVEL} (.+)
+RewriteRule .* - [E=APPLICATION_LOG_LEVEL:%1]
+RewriteCond %{ENV:APPLICATION_LOG_STDOUT} (.+)
+RewriteRule .* - [E=APPLICATION_LOG_STDOUT:%1]
+RewriteCond %{ENV:APPLICATION_LOG_FILE} (.+)
+RewriteRule .* - [E=APPLICATION_LOG_FILE:%1]
+RewriteCond %{ENV:APPLICATION_DATABASE_DSN} (.+)
+RewriteRule .* - [E=APPLICATION_DATABASE_DSN:%1]
+
+RewriteCond %{ENV:OAUTH_PRIVATE_KEY_FILE} (.+)
+RewriteRule .* - [E=OAUTH_PRIVATE_KEY_FILE:%1]
+RewriteCond %{ENV:OAUTH_PUBLIC_KEY_FILE} (.+)
+RewriteRule .* - [E=OAUTH_PUBLIC_KEY_FILE:%1]
+RewriteCond %{ENV:OAUTH_ENCRYPTION_KEY_FILE} (.+)
+RewriteRule .* - [E=OAUTH_ENCRYPTION_KEY_FILE:%1]
+RewriteCond %{ENV:OAUTH_ACCESS_TOKEN_TTL} (.+)
+RewriteRule .* - [E=OAUTH_ACCESS_TOKEN_TTL:%1]
+RewriteCond %{ENV:OAUTH_REFRESH_TOKEN_TTL} (.+)
+RewriteRule .* - [E=OAUTH_REFRESH_TOKEN_TTL:%1]
+RewriteCond %{ENV:MAIL_TEMPLATE_DIR} (.+)
+RewriteRule .* - [E=MAIL_TEMPLATE_DIR:%1]
+RewriteCond %{ENV:MAILER_DSN} (.+)
+RewriteRule .* - [E=MAILER_DSN:%1]
+RewriteCond %{ENV:MAILER_FROM_EMAIL} (.+)
+RewriteRule .* - [E=MAILER_FROM_EMAIL:%1]
+RewriteCond %{ENV:MAILER_FROM_NAME} (.+)
+RewriteRule .* - [E=MAILER_FROM_NAME:%1]
+RewriteCond %{ENV:MEDIA_STORAGE_DIR} (.+)
+RewriteRule .* - [E=MEDIA_STORAGE_DIR:%1]
+
+# serve existing files "as is"
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule .* - [NC,L]
+
+# rewrite everything else to php script
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteRule .* - [E=BASE:%1]
+RewriteRule .* %{ENV:BASE}index.php [NC,L]
+
+# make sure authorization header is available in php
+SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+
+# PHP settings that are specific for HTTP requests (should not be applied in CLI)
+php_value memory_limit 128M

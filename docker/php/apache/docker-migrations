@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+echo "Executing database migrations  ..."
+exec docker-doctrine migrations:migrate --no-interaction

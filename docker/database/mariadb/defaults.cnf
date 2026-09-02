@@ -1,0 +1,13 @@
+[mysqld]
+datadir = /data
+max_connections = 300
+table_cache = 32
+query_cache_limit = 0M
+query_cache_size = 0M
+query_cache_type = 0
+innodb_file_per_table = on
+innodb_large_prefix = on
+innodb_file_format = barracuda
+skip-name-resolve
+character-set-server = utf8mb4
+collation-server = utf8mb4_general_ci

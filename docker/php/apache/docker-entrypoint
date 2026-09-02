@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+# check required environment variables
+for check_variable in `cat /project/config/required_env.txt`; do
+    echo ${!check_variable:?missing environment variable: $check_variable} >/dev/null
+done
+
+# redirect to original entrypoint of base image
+set -- docker-php-entrypoint "$@"
+
+exec "$@"

@@ -4,5 +4,3 @@
 /phpstan.neon
 /vendor/
 /var/
-/auth.json
-/.idea

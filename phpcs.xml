@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset>
+
+    <!-- which files to check? -->
+    <file>.</file>
+    <exclude-pattern>assets/</exclude-pattern>
+    <exclude-pattern>vendor/</exclude-pattern>
+    <exclude-pattern>var/</exclude-pattern>
+    <exclude-pattern>*.build</exclude-pattern>
+
+    <!-- base coding standard -->
+    <rule ref="PSR12"/>
+
+    <!--
+        temporary allow side effects and class definitions because PHPCS 3.7.1 does not work
+        correctly with readonly classes introduced in PHP 8.2
+            see https://github.com/squizlabs/PHP_CodeSniffer/issues/3727
+    -->
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+</ruleset>

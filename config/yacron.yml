@@ -1,0 +1,10 @@
+defaults:
+    concurrencyPolicy: Forbid
+    failsWhen:
+        producesStdout: false
+        producesStderr: false
+        nonzeroReturn: true
+jobs:
+    -   name: maintenance:cleanup
+        schedule: "0 0 * * *"
+        command: docker-application maintenance:cleanup
